@@ -2,15 +2,15 @@ import json
 import pandas as pd
 import matplotlib.pyplot as plt
 
-data = pd.DataFrame(json.load(open("covid.json")))
-data.columns = data.columns.str.split().str.join(" ")
-data["Date"] = pd.to_datetime(data["Date"])
-data = data.set_index("Date")
-data = data.apply(lambda c: c.astype(str).str.replace(" ", "").astype(int))
+covid_df = pd.DataFrame(json.load(open("covid.json")))
+covid_df.columns = covid_df.columns.str.split().str.join(" ")
+covid_df["Date"] = pd.to_datetime(covid_df["Date"])
+covid_df = covid_df.set_index("Date")
+covid_df = covid_df.apply(lambda column: column.astype(str).str.replace(" ", "").astype(int))
 
-fig, (a, b) = plt.subplots(1, 2, figsize=(13, 5))
-data[["Total Confirmed Cases", "Active Cases", "Total Recovered", "Total Deaths"]].plot(ax=a, title="Cumulative")
-b.bar(data.index, data["Daily Confirmed Cases"])
-b.set_title("Daily new cases")
-fig.autofmt_xdate() # this here will tilts the date labels so they don’t overlap.
-plt.savefig("covid_data.png")# here i saved the graph as a png file in the current directory.
+figure, (cumulative_ax, daily_ax) = plt.subplots(1, 2, figsize=(13, 5))
+covid_df[["Total Confirmed Cases", "Active Cases", "Total Recovered", "Total Deaths"]].plot(ax=cumulative_ax, title="Cumulative")
+daily_ax.bar(covid_df.index, covid_df["Daily Confirmed Cases"])
+daily_ax.set_title("Daily new cases")
+figure.autofmt_xdate() 
+plt.savefig("covid_data.png")
