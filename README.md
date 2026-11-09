@@ -1,32 +1,36 @@
-# covid-data-dashboard
+# COVID-19 Data Dashboard
 
-Visualises daily COVID-19 data (5 Mar – 12 Jun 2020) as a three-panel chart:
-cumulative totals, daily new cases and daily deaths, each with a 7-day average.
+A small Python script that reads daily COVID-19 numbers (5 March to 12 June 2020) and draws them as a chart: running totals on the left, new cases per day on the right.
 
-![COVID-19 chart](covid_dashboard.png)
+![COVID-19 dashboard](covid_data.png)
 
-## Requirements
+## Getting started
 
-- Python 3.8 or newer
-- `pandas` and `matplotlib`
+You need Python 3.8+ and two libraries:
 
-## How to run
-
-```
+```bash
 pip install pandas matplotlib
-python visualise_covid.py "covid (1).json" covid_dashboard.png
 ```
 
-The first argument is the input data file and the second is where the chart is saved.
+Put `covid.json` in the same folder as the script (the name must match exactly), then run:
+
+```bash
+python visualise_covid.py
+```
+
+The chart is saved as `covid_data.png` in the same folder.
 
 ## How it works
 
-1. **Load and clean:** The JSON file is read with pandas. The numbers are stored as text with spaces as thousands separators (e.g. "61 927"), so these are stripped and converted to integers. Dates are converted to real date values.
-2. **Smooth:** A 7-day rolling average is calculated for daily cases and daily deaths, which reduces day-to-day reporting noise.
-3. **Plot:** matplotlib draws three stacked panels that share one date axis, then saves the result as a PNG.
+The data has some quirks: large numbers are stored as text with a space in them (like `"61 927"`), and one column name has a double space. The script cleans that up, then plots the totals and the daily new cases.
 
-## Findings
+## What the data shows
 
-- Daily cases reach 3,359 on 12 June, the last day in the data.
-- Deaths lag behind cases and peak at 82 on 8 June.
-- Active cases stay below recovered cases after mid-May.
+- Confirmed cases grew from 1 to 61,927.
+- The busiest day was 12 June, with 3,359 new cases.
+- From 20 May, more people had recovered than were still active.
+
+## Good to know
+
+- File names are set inside the script, so edit `visualise_covid.py` to use other data.
+- Daily deaths are loaded but not plotted yet.
